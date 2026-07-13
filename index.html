@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Estado de Cuota - Club Tilcara</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root{
+    --verde:#2e7d32; --amarillo:#f9a825; --naranja:#ef6c00; --rojo:#c62828;
+    --bg:#0f1115; --card:#1a1d24; --text:#e8e8e8; --muted:#9aa0aa;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:var(--bg); color:var(--text); padding:24px;
+  }
+  h1{font-size:1.4rem; margin-bottom:4px;}
+  p.sub{color:var(--muted); margin-top:0; margin-bottom:24px; font-size:.9rem;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;}
+  .card{
+    background:var(--card); border-radius:12px; padding:16px;
+    border-left:6px solid #555;
+  }
+  .card.verde{border-left-color:var(--verde);}
+  .card.amarillo{border-left-color:var(--amarillo);}
+  .card.naranja{border-left-color:var(--naranja);}
+  .card.rojo{border-left-color:var(--rojo);}
+  .nombre{font-weight:600; margin-bottom:6px;}
+  .estado{font-size:.85rem; color:var(--muted); margin-bottom:10px;}
+  .barra-bg{background:#2a2d35; border-radius:6px; height:8px; overflow:hidden;}
+  .barra{height:100%; border-radius:6px;}
+  .barra.verde{background:var(--verde);}
+  .barra.amarillo{background:var(--amarillo);}
+  .barra.naranja{background:var(--naranja);}
+  .barra.rojo{background:var(--rojo);}
+  #loading, #error{color:var(--muted);}
+</style>
+</head>
+<body>
+
+<h1>Estado de Cuota — Veteranos Rugby</h1>
+<p class="sub">Vista general de al día / atraso. No se muestran montos ni fechas exactas.</p>
+
+<div id="loading">Cargando...</div>
+<div id="error" style="display:none;"></div>
+<div class="grid" id="grid"></div>
+
+<script>
+  // Pegá acá la URL de tu Web App de Apps Script (termina en /exec)
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/TU_ID_DE_DEPLOY/exec';
+
+  async function cargar() {
+    try {
+      // GET simple, sin headers custom -> evita problemas de CORS/preflight
+      const res = await fetch(APPS_SCRIPT_URL + '?categoria=VETERANOS-%20RUGBY');
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const datos = await res.json();
+      renderizar(datos);
+    } catch (err) {
+      document.getElementById('loading').style.display = 'none';
+      const el = document.getElementById('error');
+      el.style.display = 'block';
+      el.textContent = 'No se pudo cargar el padrón: ' + err.message;
+    }
+  }
+
+  function renderizar(datos) {
+    document.getElementById('loading').style.display = 'none';
+    const grid = document.getElementById('grid');
+    grid.innerHTML = '';
+    datos.forEach(d => {
+      const card = document.createElement('div');
+      card.className = 'card ' + d.color;
+      card.innerHTML = `
+        <div class="nombre">${d.nombre}</div>
+        <div class="estado">${d.estado}</div>
+        <div class="barra-bg"><div class="barra ${d.color}" style="width:${d.score}%"></div></div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  cargar();
+</script>
+</body>
+</html>
