@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Tilcara Legends — Estado de Cuota Societaria</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
- 
+
 <!-- Vista previa al compartir (WhatsApp / redes) -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Estado de Cuota Societaria — Tilcara Legends">
@@ -14,12 +14,12 @@
 <meta property="og:image:height" content="630">
 <meta property="og:url" content="https://disenoweeb.github.io/cuotas-legends/">
 <meta name="theme-color" content="#0e1f16">
- 
+
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Estado de Cuota Societaria — Tilcara Legends">
 <meta name="twitter:description" content="Consultá el estado de tu cuota societaria de Veteranos de Rugby.">
 <meta name="twitter:image" content="https://res.cloudinary.com/dy9zeeo5g/image/upload/b_rgb:0e1f16,w_1200,h_630,c_pad/v1775063479/lbwk2ikigsjombr6nrmu.png">
- 
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=Great+Vibes&display=swap" rel="stylesheet">
 <style>
@@ -31,7 +31,7 @@
     --dorado-opaco:#8a6f2f;
     --text:#ece4d2;
     --muted:#9fae9f;
- 
+
     --al-dia:#3c8a4a;
     --leve:#c9a24b;
     --moderado:#c9772f;
@@ -48,7 +48,7 @@
     min-height:100vh;
     padding:0 0 40px 0;
   }
- 
+
   /* ---------- HERO ---------- */
   .hero{
     position:relative;
@@ -64,9 +64,9 @@
   }
   .hero::before{ left:-10%; }
   .hero::after{ right:-10%; }
- 
+
   .crest{ margin:0 auto 14px; display:block; }
- 
+
   .club{
     font-family:'Cinzel', serif;
     font-weight:700;
@@ -93,7 +93,7 @@
     text-transform:uppercase;
   }
   .subtitulo span{ color:var(--dorado); padding:0 10px; }
- 
+
   /* ---------- CONTENT ---------- */
   .contenido{ max-width:1100px; margin:0 auto; padding:32px 20px 0; }
   .contenido h2{
@@ -104,7 +104,7 @@
     color:var(--muted); text-align:center; font-family:system-ui,sans-serif;
     font-size:.85rem; margin-top:0; margin-bottom:28px;
   }
- 
+
   .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;}
   .card{
     background:linear-gradient(160deg, var(--verde-panel), #0f1e16);
@@ -118,7 +118,7 @@
   .card.amarillo{ --linea:var(--leve); }
   .card.naranja{ --linea:var(--moderado); }
   .card.rojo{ --linea:var(--importante); }
- 
+
   .nombre{
     font-family:system-ui,sans-serif;
     font-weight:600; margin-bottom:6px; font-size:.95rem; color:var(--text);
@@ -134,10 +134,56 @@
   .barra.amarillo{background:var(--leve);}
   .barra.naranja{background:var(--moderado);}
   .barra.rojo{background:var(--importante);}
- 
+
   #loading, #error{
     text-align:center; color:var(--muted); font-family:system-ui,sans-serif;
     padding:20px;
+  }
+
+  /* ---------- RESUMEN ---------- */
+  .resumen{
+    margin-top:40px;
+    padding-top:28px;
+    border-top:1px solid rgba(201,162,75,0.25);
+  }
+  .resumen h2{
+    font-size:1rem; letter-spacing:2px; text-transform:uppercase;
+    color:var(--dorado-claro); margin-bottom:22px; text-align:center;
+  }
+  .resumen-grid{
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+    gap:16px;
+  }
+  .resumen-card{
+    background:linear-gradient(160deg, var(--verde-panel), #0f1e16);
+    border:1px solid rgba(201,162,75,0.25);
+    border-top:2px solid var(--linea, #555);
+    border-radius:4px;
+    padding:22px 18px;
+    text-align:center;
+  }
+  .resumen-card.verde{ --linea:var(--al-dia); }
+  .resumen-card.naranja{ --linea:var(--moderado); }
+  .resumen-card.rojo{ --linea:var(--importante); }
+
+  .resumen-pct{
+    font-family:'Cinzel', serif;
+    font-weight:700;
+    font-size:2.4rem;
+    line-height:1;
+  }
+  .resumen-card.verde .resumen-pct{ color:var(--al-dia); }
+  .resumen-card.naranja .resumen-pct{ color:var(--moderado); }
+  .resumen-card.rojo .resumen-pct{ color:var(--importante); }
+
+  .resumen-label{
+    font-family:system-ui,sans-serif;
+    font-size:.8rem; letter-spacing:1px; text-transform:uppercase;
+    color:var(--text); margin-top:8px;
+  }
+  .resumen-detalle{
+    font-family:system-ui,sans-serif;
+    font-size:.72rem; color:var(--muted); margin-top:4px;
   }
 </style>
 </head>
@@ -145,16 +191,39 @@
 
 <div class="hero">
   <img class="crest" src="https://res.cloudinary.com/dy9zeeo5g/image/upload/v1775063479/lbwk2ikigsjombr6nrmu.png" width="90" alt="Escudo Club Tilcara Legends">
-  
+  <div class="club">Club Tilcara</div>
+  <div class="legends">Legends</div>
+  <div class="subtitulo">Veteranos<span>&mdash;</span>de Rugby</div>
 </div>
 
 <div class="contenido">
   <h2>Estado de Cuota</h2>
-  <p class="sub">No se muestran montos ni fechas exactas.</p>
+  <p class="sub">Vista general de al día / atraso. No se muestran montos ni fechas exactas.</p>
 
   <div id="loading">Cargando...</div>
   <div id="error" style="display:none;"></div>
   <div class="grid" id="grid"></div>
+
+  <div class="resumen" id="resumen" style="display:none;">
+    <h2>Resumen General</h2>
+    <div class="resumen-grid">
+      <div class="resumen-card verde">
+        <div class="resumen-pct" id="pct-aldia">0%</div>
+        <div class="resumen-label">Al día</div>
+        <div class="resumen-detalle">Sin deuda o cuota corriente</div>
+      </div>
+      <div class="resumen-card naranja">
+        <div class="resumen-pct" id="pct-moderado">0%</div>
+        <div class="resumen-label">Atraso moderado</div>
+        <div class="resumen-detalle">Debe al menos 2 cuotas</div>
+      </div>
+      <div class="resumen-card rojo">
+        <div class="resumen-pct" id="pct-importante">0%</div>
+        <div class="resumen-label">Atraso importante</div>
+        <div class="resumen-detalle">Requiere atención</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -190,6 +259,25 @@
       `;
       grid.appendChild(card);
     });
+
+    mostrarResumen(datos);
+  }
+
+  function mostrarResumen(datos) {
+    const total = datos.length;
+    if (total === 0) return;
+
+    // "Al día" unifica verde (al día) y amarillo (atraso leve)
+    const aldia = datos.filter(d => d.color === 'verde' || d.color === 'amarillo').length;
+    const moderado = datos.filter(d => d.color === 'naranja').length;
+    const importante = datos.filter(d => d.color === 'rojo').length;
+
+    const pct = n => Math.round((n / total) * 100) + '%';
+
+    document.getElementById('pct-aldia').textContent = pct(aldia);
+    document.getElementById('pct-moderado').textContent = pct(moderado);
+    document.getElementById('pct-importante').textContent = pct(importante);
+    document.getElementById('resumen').style.display = 'block';
   }
 
   cargar();
