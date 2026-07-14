@@ -38,6 +38,7 @@
     --importante:#a13d33;
   }
   *{box-sizing:border-box;}
+  html{ scroll-behavior:smooth; }
   body{
     margin:0; font-family:'Cinzel', serif;
     color:var(--text);
@@ -61,11 +62,24 @@
     content:"";
     position:absolute; top:0; height:2px; width:60%;
     background:linear-gradient(90deg, transparent, var(--dorado), transparent);
+    transform:scaleX(0);
+    animation:trazo-dorado 1.1s ease-out .2s forwards;
   }
-  .hero::before{ left:-10%; }
-  .hero::after{ right:-10%; }
+  .hero::before{ left:-10%; transform-origin:left; }
+  .hero::after{ right:-10%; transform-origin:right; }
 
-  .crest{ margin:0 auto 14px; display:block; }
+  @keyframes trazo-dorado{ to{ transform:scaleX(1); } }
+
+  .crest{
+    margin:0 auto 14px; display:block;
+    opacity:0; transform:translateY(-14px) scale(.92);
+    animation:escudo-entrada .9s cubic-bezier(.2,.8,.2,1) .1s forwards;
+    filter:drop-shadow(0 0 0 rgba(201,162,75,0));
+    transition:filter .4s ease;
+  }
+  .crest:hover{ filter:drop-shadow(0 0 14px rgba(201,162,75,0.45)); }
+
+  @keyframes escudo-entrada{ to{ opacity:1; transform:translateY(0) scale(1); } }
 
   .club{
     font-family:'Cinzel', serif;
@@ -113,7 +127,20 @@
     border-radius:4px;
     padding:18px;
     position:relative;
+
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1),
+               box-shadow .3s ease, border-color .3s ease;
   }
+  .card.is-visible{ opacity:1; transform:translateY(0); }
+  .card:hover{
+    border-color:rgba(201,162,75,0.55);
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+    transform:translateY(-3px);
+  }
+  .card.is-visible:hover{ transform:translateY(-3px); }
+
   .card.verde{ --linea:var(--al-dia); }
   .card.amarillo{ --linea:var(--leve); }
   .card.naranja{ --linea:var(--moderado); }
@@ -129,15 +156,32 @@
     text-transform:uppercase; letter-spacing:1px;
   }
   .barra-bg{background:rgba(255,255,255,0.06); border-radius:6px; height:6px; overflow:hidden;}
-  .barra{height:100%; border-radius:6px;}
+  .barra{
+    height:100%; border-radius:6px; width:0;
+    transition:width 1s cubic-bezier(.2,.8,.2,1) .15s;
+  }
   .barra.verde{background:var(--al-dia);}
   .barra.amarillo{background:var(--leve);}
   .barra.naranja{background:var(--moderado);}
   .barra.rojo{background:var(--importante);}
 
-  #loading, #error{
+  #loading{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:16px;
+  }
+  #error{
     text-align:center; color:var(--muted); font-family:system-ui,sans-serif;
     padding:20px;
+  }
+  .skeleton{
+    height:92px; border-radius:4px;
+    border:1px solid rgba(201,162,75,0.15);
+    background:linear-gradient(100deg, #142418 30%, #1c3123 50%, #142418 70%);
+    background-size:220% 100%;
+    animation:brillo 1.4s ease-in-out infinite;
+  }
+  @keyframes brillo{
+    0%{ background-position:120% 0; }
+    100%{ background-position:-20% 0; }
   }
 
   /* ---------- RESUMEN ---------- */
@@ -161,7 +205,19 @@
     border-radius:4px;
     padding:22px 18px;
     text-align:center;
+
+    opacity:0;
+    transform:translateY(22px);
+    transition:opacity .6s ease, transform .6s cubic-bezier(.2,.8,.2,1),
+               box-shadow .3s ease, border-color .3s ease;
   }
+  .resumen-card.is-visible{ opacity:1; transform:translateY(0); }
+  .resumen-card:hover{
+    border-color:rgba(201,162,75,0.55);
+    box-shadow:0 10px 28px rgba(0,0,0,0.35);
+    transform:translateY(-3px);
+  }
+  .resumen-card.is-visible:hover{ transform:translateY(-3px); }
   .resumen-card.verde{ --linea:var(--al-dia); }
   .resumen-card.naranja{ --linea:var(--moderado); }
   .resumen-card.rojo{ --linea:var(--importante); }
@@ -185,22 +241,28 @@
     font-family:system-ui,sans-serif;
     font-size:.72rem; color:var(--muted); margin-top:4px;
   }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+    .card, .resumen-card{ opacity:1; transform:none; }
+    .barra{ width:var(--w, 0) !important; }
+  }
 </style>
 </head>
 <body>
 
 <div class="hero">
   <img class="crest" src="https://res.cloudinary.com/dy9zeeo5g/image/upload/v1775063479/lbwk2ikigsjombr6nrmu.png" width="90" alt="Escudo Club Tilcara Legends">
-  <div class="club">Club Tilcara</div>
-  <div class="legends">Legends</div>
-  <div class="subtitulo">Veteranos<span>&mdash;</span>de Rugby</div>
 </div>
 
 <div class="contenido">
-  <h2>Estado de Cuota</h2>
-  <p class="sub">Vista general de al día / atraso. No se muestran montos ni fechas exactas.</p>
+  <h2>Estado de Cuota Social | 13 de JULIO 2026</h2>
+  <p class="sub">No se muestran montos ni fechas exactas.</p>
 
-  <div id="loading">Cargando...</div>
+  <div id="loading">
+    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+    <div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>
+  </div>
   <div id="error" style="display:none;"></div>
   <div class="grid" id="grid"></div>
 
@@ -249,18 +311,50 @@
     document.getElementById('loading').style.display = 'none';
     const grid = document.getElementById('grid');
     grid.innerHTML = '';
-    datos.forEach(d => {
+    datos.forEach((d, i) => {
       const card = document.createElement('div');
       card.className = 'card ' + d.color;
+      card.style.transitionDelay = Math.min(i * 45, 500) + 'ms';
       card.innerHTML = `
         <div class="nombre">${d.nombre}</div>
         <div class="estado">${d.estado}</div>
-        <div class="barra-bg"><div class="barra ${d.color}" style="width:${d.score}%"></div></div>
+        <div class="barra-bg"><div class="barra ${d.color}" style="--w:${d.score}%"></div></div>
       `;
       grid.appendChild(card);
+      observarReveal(card, () => {
+        card.querySelector('.barra').style.width = d.score + '%';
+      });
     });
 
     mostrarResumen(datos);
+  }
+
+  // Dispara la animación de entrada (fade + slide) cuando el elemento
+  // entra en el viewport, con un callback opcional para animar contenido interno.
+  function observarReveal(el, onVisible) {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          if (onVisible) onVisible();
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    obs.observe(el);
+  }
+
+  // Anima un número de 0 hasta el valor final (ej. "62%")
+  function contarHasta(el, valorFinal, duracionMs = 900) {
+    const destino = parseInt(valorFinal, 10) || 0;
+    const inicio = performance.now();
+    function paso(ahora) {
+      const t = Math.min((ahora - inicio) / duracionMs, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(destino * ease) + '%';
+      if (t < 1) requestAnimationFrame(paso);
+    }
+    requestAnimationFrame(paso);
   }
 
   function mostrarResumen(datos) {
@@ -274,10 +368,19 @@
 
     const pct = n => Math.round((n / total) * 100) + '%';
 
-    document.getElementById('pct-aldia').textContent = pct(aldia);
-    document.getElementById('pct-moderado').textContent = pct(moderado);
-    document.getElementById('pct-importante').textContent = pct(importante);
-    document.getElementById('resumen').style.display = 'block';
+    const resumen = document.getElementById('resumen');
+    resumen.style.display = 'block';
+
+    const tarjetas = [
+      { el: document.getElementById('pct-aldia'), valor: pct(aldia) },
+      { el: document.getElementById('pct-moderado'), valor: pct(moderado) },
+      { el: document.getElementById('pct-importante'), valor: pct(importante) },
+    ];
+
+    tarjetas.forEach(({ el, valor }) => {
+      const card = el.closest('.resumen-card');
+      observarReveal(card, () => contarHasta(el, valor));
+    });
   }
 
   cargar();
