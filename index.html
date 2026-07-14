@@ -256,7 +256,7 @@
 </div>
 
 <div class="contenido">
-  <h2>Estado de Cuota Social | 14|07|2026</h2>
+  <h2>Estado de Cuota Social 1 14|07|2026</h2>
   <p class="sub">No se muestran montos ni fechas exactas.</p>
 
   <div id="loading">
@@ -295,7 +295,10 @@
   async function cargar() {
     try {
       // GET simple, sin headers custom -> evita problemas de CORS/preflight
-      const res = await fetch(APPS_SCRIPT_URL + '?categoria=VETERANOS-%20RUGBY');
+      // "_=" con timestamp rompe el cache del navegador y de Apps Script,
+      // así siempre trae los datos frescos de la hoja.
+      const url = APPS_SCRIPT_URL + '?categoria=VETERANOS-%20RUGBY&_=' + Date.now();
+      const res = await fetch(url, { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const datos = await res.json();
       renderizar(datos);
